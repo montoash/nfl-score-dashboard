@@ -32,7 +32,7 @@ import numpy as np
 import pandas as pd
 
 try:
-    # Import the modelling pipeline from the cleaned prediction module
+    print("API is starting, attempting to import modelling libraries...")
     from nfl_score_prediction import (
         load_game_data,
         compute_team_statistics,
@@ -40,14 +40,16 @@ try:
         evaluate_models,
         train_final_model,
     )
-    import nfl_data_py as nfl  # noqa: F401
+    import nfl_data_py as nfl
     HAS_NFL_DATA = True
-except Exception:
-    # If nfl_data_py or the prediction module cannot be imported, set a flag
-    # and provide mock responses instead. This allows the API to respond
-    # gracefully when running in an environment without the necessary
-    # dependencies or network access.
+    print("--> SUCCESS: All modelling libraries imported correctly.")
+except Exception as e:
     HAS_NFL_DATA = False
+    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    print("!!! CRITICAL ERROR: FAILED to import modelling libraries.     !!!")
+    print("!!! The API will only serve sample data. See error below.   !!!")
+    print(f"!!! Error details: {e}")
+    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 
 
 app = FastAPI(title="NFL Score Prediction API")
